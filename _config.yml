@@ -46,3 +46,7 @@ kramdown:
     preview: true
 
 highlighter: rouge
+
+# Additional gems to include
+gems:
+  - jekyll-feed
