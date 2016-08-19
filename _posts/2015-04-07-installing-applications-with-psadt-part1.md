@@ -59,7 +59,7 @@ Copy-Item C:\Users\replica\Downloads\PSADT\Toolkit C:\Users\replica\Documents\De
 
 You should now have a directory with three folders and three files.  In some cases, either the Files or the SupportFiles directories are missing; if so, feel free to create them.  Your work directory should look like this:
 
-[![You should have a folder called AppDeployToolkit, a folder called Files, and a folder called SupportFiles.]({{ site.url }}/images/2015-04-07-psadt-1/psadt-files.png)]({{ site.url }}/images/2015-04-07-psadt-1/psadt-files.png)
+[![You should have a folder called AppDeployToolkit, a folder called Files, and a folder called SupportFiles.](/public/img/blog/2015-04-07-psadt-1/psadt-files.png)](/public/img/blog/2015-04-07-psadt-1/psadt-files.png)
 
 Let's talk about these files and folders for a moment.
 
@@ -129,7 +129,7 @@ After setting those variables, we can scroll down a bit more, until we see a com
 
 Look at the Show-InstallationWelcome line in this section.  There are a lot of things we can configure here, but left as the default, this line will produce a GUI pop-up that looks like this:
 
-[![A window will prompt you to close Internet Explorer or defer the installation.]({{ site.url }}/images/2015-04-07-psadt-1/psadt-welcome.png)]({{ site.url }}/images/2015-04-07-psadt-1/psadt-welcome.png)
+[![A window will prompt you to close Internet Explorer or defer the installation.](/public/img/blog/2015-04-07-psadt-1/psadt-welcome.png)](/public/img/blog/2015-04-07-psadt-1/psadt-welcome.png)
 
 Forcing users to close Internet Explorer doesn't really make much sense when we're trying to install Firefox.  On the other hand, it would be helpful if we could require users to close any existing version of Firefox before we attempt to upgrade the program, in order to prevent any problems with files in use.  Fortunately, this is simple to do with the toolkit by replacing the -CloseApps parameter:
 
@@ -219,17 +219,17 @@ If the installation (or the uninstallation) didn't work as expected, it's time t
 
 The name of the log file generated is based on the application variables we declared at the very beginning.  In this case, we're looking for either Mozilla_Firefox_37.0.1_x86_EN_01_PSAppDeployToolkit_Install.log or Mozilla_Firefox_37.0.1_x86_EN_01_PSAppDeployToolkit_Uninstall.log, depending on whether we're troubleshooting an install or an uninstall.  Open this file up and...whoa!
 
-[![How do we make any sense out of this mess?]({{ site.url }}/images/2015-04-07-psadt-1/psadt-log-notepad.png)]({{ site.url }}/images/2015-04-07-psadt-1/psadt-log-notepad.png)
+[![How do we make any sense out of this mess?](/public/img/blog/2015-04-07-psadt-1/psadt-log-notepad.png)](/public/img/blog/2015-04-07-psadt-1/psadt-log-notepad.png)
 
 By default, the toolkit writes its log files in a similar format to logs from SCCM.  To make sense of these log files, download and install the [System Center 2012 R2 Configuration Manager Toolkit](http://www.microsoft.com/en-us/download/details.aspx?id=36213).  There are several utilities in here useful for troubleshooting SCCM, but the utility we're interested in right now is a small file called CMTrace.  This is a SCCM log file viewer that can parse logs in that format much more easily.  Even if you do not use SCCM in your environment, CMTrace will make it much easier to read the log files from this toolkit.
 
 After installing, launch CMTrace.exe (there should be a shortcut in your Start menu), and it will offer to become your default viewer for .log files.  After saying yes, re-open the log file left from the toolkit, and you'll see a much happier sight.
 
-[![CMTrace makes this log file much easier to parse.]({{ site.url }}/images/2015-04-07-psadt-1/psadt-log-cmtrace.png)]({{ site.url }}/images/2015-04-07-psadt-1/psadt-log-cmtrace.png)
+[![CMTrace makes this log file much easier to parse.](/public/img/blog/2015-04-07-psadt-1/psadt-log-cmtrace.png)](/public/img/blog/2015-04-07-psadt-1/psadt-log-cmtrace.png)
 
 In CMTrace, any log entries which contain keywords such as "error" or "failed" will be highlighted in red.  Keywords like "warning" will cause a yellow highlight.  Here's an example of a case when the main Firefox setup file failed with error code 1:
 
-[![The line in question will read something like, "Execution failed with exit code [1]."]({{ site.url }}/images/2015-04-07-psadt-1/psadt-log-cmtrace-error.png)]({{ site.url }}/images/2015-04-07-psadt-1/psadt-log-cmtrace-error.png)
+[![The line in question will read something like, "Execution failed with exit code [1]."](/public/img/blog/2015-04-07-psadt-1/psadt-log-cmtrace-error.png)](/public/img/blog/2015-04-07-psadt-1/psadt-log-cmtrace-error.png)
 
 CMTrace, when combined with the extensive logging left by the toolkit, makes it a snap to find out where the installation failed.  You can also write additional log entries to these log files using the `Write-Log` function of the toolkit, in case you want to extend the logging with your own information.
 
