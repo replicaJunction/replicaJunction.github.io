@@ -1,0 +1,48 @@
+# Permalinks
+permalink:        pretty
+
+# Setup
+url:              http://replicaJunction.github.io
+
+# Set to '' in case of hosting on `http://<your-github-name>.github.io`
+baseurl:          ''
+
+title:            replicaJunction
+
+# Markdown enabled, however don't use more than one paragraph (enforced by `>`)
+description:      >
+  Let the computer do the heavy lifting.
+
+# The tags listed as entries in the sidebar
+sidebar_tags:     [posh, psadt]
+
+# Fallback image and color if not overwritten for tag or post
+image:            /public/img/sidebar.png
+color:            '#A85641'
+
+author:
+  name:           'replicaJunction'
+
+  # Setting social media usernames will add icons at the bottom of the sidebar
+  #twitter:        qwtel
+  github:         replicaJunction
+
+  # Setting a disqus username will enable the comment section
+  disqus:         replicaJunction
+
+  # This photo will be used in the about section
+  #photo:          http://qwtel.com/public/img/flo.jpg
+  photo:          /public/img/luke.png
+
+  # Markdown enabled, can use multiple paragraphs (enabled by `|`)
+  about:          |
+    Hi, I'm Joshua, or replicaJunction.
+
+    I like PowerShell, gaming, long walks in the rain, and compliments.
+
+kramdown:
+  math_engine: mathjax
+  math_engine_opts:
+    preview: true
+
+highlighter: rouge

@@ -1,0 +1,26 @@
+# Add an entry, where the key represents a slug.
+# Provide at least a `name` value and optionally `image`, `color` and `description`.
+# Markdown is enabled for `description`, however don't use more than one paragraph (enforced by `>`)
+#
+# Example:
+#
+# ~~~
+# mytag:
+#   name: My Tag
+#   description: >
+#     *My Tag* is an example of how to define a custom tag.
+# ~~~
+
+posh:
+  name: PowerShell
+  # image: /hydejack/public/img/hyde.jpg
+  color: '#949667'
+  description: >
+    PowerShell is a cross-platform command-line shell and scripting language for automation and world domination.
+
+psadt:
+  name: PSADT
+  # image: /hydejack/public/img/hyde.jpg
+  color: '#949667'
+  description: >
+    The [PowerShell App Deployment Toolkit](http://psappdeploytoolkit.com/) is an open-source framework for building rich application packages with PowerShell.
