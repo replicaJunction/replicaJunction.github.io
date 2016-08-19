@@ -39,7 +39,7 @@ Stub installers like this are typically designed to be friendly to home users in
 
 Instead of downloading from the big friendly red button, look to the bottom of this page for the link that reads "See all Java downloads." This will provide options to download either an online or offline install. The online install checks in at 550KB, and the offline install reads 47.8MB (for the 32-bit version). That looks much more likely to include the files we need.
 
-[![On Java's "all downloads" page, the middle download under the Windows heading is labeled "Windows Offline.]({{ site.url }}/images/blog/2016-08-18-psadt-2/java-allDownloads.png)]({{ site.url }}/images/blog/2016-08-18-psadt-2/java-allDownloads.png)
+[![On Java's "all downloads" page, the middle download under the Windows heading is labeled "Windows Offline.](/public/img/blog/2016-08-18-psadt-2/java-allDownloads.png)](/public/img/blog/2016-08-18-psadt-2/java-allDownloads.png)
 
 The file we downloaded, `jre-8u101-windows-i586.exe`, is a setup.exe file.  In the past, I've typically tried to extract these files to get access to the underlying MSI file - MSI files play very nicely with SCCM, as well as with PSADT.  A lot of people online will also suggest trying to extract the EXE file.  With Java 8, though, I had to jump through a lot of hoops to get to the MSI file, and when I tried installing that, I received an error that there was a problem with the installer package.
 
