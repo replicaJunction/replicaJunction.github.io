@@ -145,9 +145,14 @@ Again, I got these command-line parameters from Oracle's site.
 Execute-Process -Path "$dirFiles\jre-8u101-windows-i586.exe" -Parameters "INSTALLCFG=$dirSupportFiles\java.settings.cfg /L $configToolkitLogDir\jre-8u101-windows-i586.log"
 {% endhighlight %}
 
+Notice that I'm using some variables here for file paths. These are variables built into the toolkit that provide a quick reference to some locations:
+
+* $dirSupportFiles - full path to the SupportFiles directory
+* $configToolkitLogDir - directory where the toolkit log files are saved. This can be defined in the toolkit's config.xml file. I use this to store the log file Java creates in the same location as the log file the toolkit creates.
+
 ### Post-Installation
 
-Finally, we'll want to disable Java's automatic updater with some Registry keys.  Again, we'll use the toolkit function Set-RegistryKey instead of PowerShell's native Set-ItemProperty.  This section begins on roughly line 134:
+The Post-Installation section is handy for clean-up tasks, or for modifying application defaults or preferences after the installer has completed. In our Firefox example, there really wasn't anything we needed to customize here, but there are a couple of things we should "fix" for Java, like disabling Java's automatic updater with some Registry keys. This section begins on roughly line 134:
 
 {% highlight powershell %}
 ##*===============================================
@@ -175,7 +180,7 @@ if ($Is64Bit)
 }
 {% endhighlight %}
 
-The variable $Is64Bit is a variable defined by PSADT that reflects whether we are running on a 64-bit system or not.  This allows us to set the correct Registry entries for both 32-bit and 64-bit systems.  Check out the Toolkit's own guide to learn about all of these built-in variables - they can save a lot of your own time.
+The variable $Is64Bit is another variable defined by PSADT that reflects whether we are running on a 64-bit system or not.  This allows us to set the correct Registry entries for both 32-bit and 64-bit systems.  Check out the Toolkit's own guide (the Word document included with the toolkit) to learn about all of these built-in variables - they can save a lot of your own time.
 
 Why are we using Set-RegistryKey instead of PowerShell's native Set-ItemProperty?  Same reasons discussed in part 1 regarding Execute-Process: it provides all the extensive toolkit logging and error checking we would have to write ourselves if we used Set-ItemProperty. Set-RegistryKey also properly handles HKEY_LOCAL_MACHINE instead of forcing us to use the PSProvider path HKLM:\, which is a bit easier on the eyes.
 
