@@ -38,7 +38,7 @@ We'll use [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/all/) as an ex
 
 ## Downloading files
 
-[Download the latest version of the toolkit](https://psappdeploytoolkit.codeplex.com/) and extract it.  We'll want to maintain a "clean" copy of these files so we can copy them into future builds.
+[Download the latest version of the toolkit](http://psappdeploytoolkit.com/) and extract it.  We'll want to maintain a "clean" copy of these files so we can copy them into future builds.
 
 Check out everything packaged in the download:
 
