@@ -28,7 +28,7 @@ Administering software deployments presents a unique set of challenges:
 
 It seems pretty obvious that we'll need the ability to make decisions specific to each applicion, but it also seems like we'll need a single set of tools available to us for software installations.
 
-The [PowerShell App Deployment Toolkit](https://psappdeploytoolkit.codeplex.com/) is a free toolkit that provides some answers to these challenges.  It also helps to prevent re-inventing the wheel each time a new application needs to be deployed.  The toolkit is designed for ease of use with solutions such as SCCM, but it's easily usable with other configuration management solutions such as MDT, Chef, or even PowerShell's own DSC.
+The [PowerShell App Deployment Toolkit](http://psappdeploytoolkit.com/) is a free toolkit that provides some answers to these challenges.  It also helps to prevent re-inventing the wheel each time a new application needs to be deployed.  The toolkit is designed for ease of use with solutions such as SCCM, but it's easily usable with other configuration management solutions such as MDT, Chef, or even PowerShell's own DSC.
 
 There is some documentation provided with the toolkit, but I've heard from some people that actually writing their first installation is a daunting task.  Let's dig in and create a simple scripted install!
 
