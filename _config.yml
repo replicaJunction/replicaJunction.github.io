@@ -36,9 +36,7 @@ author:
 
   # Markdown enabled, can use multiple paragraphs (enabled by `|`)
   about:          |
-    Hi, I'm Joshua, or replicaJunction.
-
-    I like PowerShell, gaming, long walks in the rain, and compliments.
+    replicaJunction is an Information Security Engineer specializing in automation and PowerShell. He enjoys mechanical keyboards, board and video games, and explaining things in much more detail than anyone wants to know.
 
 kramdown:
   math_engine: mathjax
