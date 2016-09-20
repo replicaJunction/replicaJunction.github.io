@@ -2,6 +2,7 @@
 layout: post
 title: Suppressing PSScriptAnalyzer in Pester
 excerpt: Sometimes your tests need to take shortcuts
+tags: [posh]
 ---
 
 # Table of Contents
