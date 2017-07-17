@@ -20,16 +20,16 @@ However, there are times when the PSCustomObject returned by ConvertFrom-Json is
 
 When using Strict mode, checking whether the JSON contained a key uses this fairly tedious snippet:
 
-{% highlight powershell}
+{% highlight powershell %}
     $obj = $json | ConvertFrom-Json
     if ($obj.PSObject.Properties.Name -contains 'MyCustomKey') {
         # ...
     }
-{% endhighlight }
+{% endhighlight %}
 
 Hashtables make this far easier:
 
-{% highlight powershell}
+{% highlight powershell %}
     $hash = @{ a = 1; b = 2;}
     if ($hash.ContainsKey('MyCustomKey')) {
         # ...
@@ -39,33 +39,33 @@ Hashtables make this far easier:
     if ($hash['MyCustomKey']) {
         # ...
     }
-{% endhighlight }
+{% endhighlight %}
 
 ## Extending and combining objects
 
 PSCustomObjects have to be extended using Add-Member:
 
-{% highlight powershell}
+{% highlight powershell %}
     $obj | Add-Member -MemberType NoteProperty -Name 'MyCustomKey' -Value 'foo'
-{% endhighlight }
+{% endhighlight %}
 
 Hashtables can have additional properties added implicitly, even if the key doesn't exist:
 
-{% highlight powershell}
+{% highlight powershell %}
     $hash['MyCustomKey'] = 'foo'
 
     # More formal
     $hash.Add('MyCustomKey', 'foo')
-{% endhighlight }
+{% endhighlight %}
 
 Hashtables can also be combined easily:
 
-{% highlight powershell}
+{% highlight powershell %}
     $hash1 = @{a = 1}
     $hash2 = @{b = 2}
 
     $hash3 = $hash1 + $hash2
-{% endhighlight }
+{% endhighlight %}
 
 Is there a convenient way for us to create a hashtable from JSON?
 
@@ -86,15 +86,15 @@ Because of this, we can create a custom function and name it `ConvertTo-Json`, a
 
 You can create a wrapper function yourself line-by-line if you'd like, but I found Jeff Hicks' [Copy-Command function](https://www.petri.com/making-powershell-command) gave me a pretty good starting point:
 
-{% highlight powershell}
+{% highlight powershell %}
     PS> Copy-Command -Command 'ConvertFrom-Json' -UseForwardHelp -IncludeDynamic | Out-File C:\PowerShell\Scripts\ConvertFrom-Json.ps1 -Force
-{% endhighlight }
+{% endhighlight %}
 
 # The Code
 
 Here's the full code for my custom wrapper function around `ConvertTo-Json`:
 
-{% highlight powershell}
+{% highlight powershell %}
     function ConvertFrom-Json {
         <#
         .ForwardHelpTargetName Microsoft.PowerShell.Utility\ConvertFrom-Json
@@ -156,11 +156,11 @@ Here's the full code for my custom wrapper function around `ConvertTo-Json`:
 
     }
 
-{% endhighlight }
+{% endhighlight %}
 
 # Example Usage
 
-{% highlight powershell}
+{% highlight powershell %}
     PS> $json = @'
     {
         "cat":  "meow",
@@ -183,7 +183,7 @@ Here's the full code for my custom wrapper function around `ConvertTo-Json`:
     programmer                     derp
     cat                            meow
 
-{% endhighlight }
+{% endhighlight %}
 
 Notice that the default behavior doesn't change - if we don't specify what we want to do with the JSON, it will be converted to an object as usual. This prevents any disruption to code that uses the built-in cmdlet and expects an object in response.
 
