@@ -71,9 +71,9 @@ Is there a convenient way for us to create a hashtable from JSON?
 
 # That's a Wrap
 
-Converting JSON to a hashtable is actually fairly simple with the lesser-known [JavaScriptSerializer class](https://msdn.microsoft.com/en-us/library/system.web.script.serialization.javascriptserializer(v=vs.110).aspx). (I believe this was added in .NET 4.5, but if I'm incorrect, feel free to let me know.) This assembly isn't loaded by default in a PowerShell session, but thanks to `Add-Type`, loading an assembly is trivial (notice that the MSDN page tells us exactly what DLL file to reference).
+Actually, it turns out that this is a pretty trivial process with the lesser-known [JavaScriptSerializer class](https://msdn.microsoft.com/en-us/library/system.web.script.serialization.javascriptserializer(v=vs.110).aspx). (I believe this was added in .NET 4.5, but if I'm incorrect, feel free to let me know.) This assembly isn't loaded by default in a PowerShell session, but thanks to `Add-Type`, loading an assembly is trivial (notice that the MSDN page tells us exactly what DLL file to reference). Thanks to [Kevin Marquette's article on hashtables](https://kevinmarquette.github.io/2016-11-06-powershell-hashtable-everything-you-wanted-to-know-about/#converting-json-to-hashtable) for pointing me in this direction!
 
-This is only half of the problem, though. We could write a function to wrap this class, but then any code where we need to reference our JSON-to-hashtable logic would need to include or reference that function. We'd need to do a find/replace to change all references of `ConvertTo-Json` to our custom function name.
+This is only half of the problem, though. We could write a function to wrap this class, but then any code where we need to reference our JSON-to-hashtable logic would need to include or reference that function. We'd need to do a find/replace to change all references of `ConvertFrom-Json` to our custom function name.
 
 Instead, PowerShell's command precedence allows us to define a custom function that "overrides" a built-in cmdlet. PowerShell resolves commands in this order:
 
@@ -82,17 +82,21 @@ Instead, PowerShell's command precedence allows us to define a custom function t
 3. Native cmdlets
 4. Binaries (anything in the PATH variable)
 
-Because of this, we can create a custom function and name it `ConvertTo-Json`, and it will magically be used by default anywhere we call `ConvertTo-Json` in that PowerShell session.
+Because of this, we can create a custom function and name it `ConvertFrom-Json`, and it will take precedence over the native cmdlet (a function takes precedence over a cmdlet). This is the same reason typing `dir` in PowerShell resolves to an alias to `Get-ChildItem` before it resolves to `dir.exe` - an alias takes precedence over a binary. This means when we load a custom function called `ConvertFrom-Json`, it will magically be used by default anywhere we call `ConvertFrom-Json` in that PowerShell session.
 
 You can create a wrapper function yourself line-by-line if you'd like, but I found Jeff Hicks' [Copy-Command function](https://www.petri.com/making-powershell-command) gave me a pretty good starting point:
 
 {% highlight powershell %}
-    PS> Copy-Command -Command 'ConvertFrom-Json' -UseForwardHelp -IncludeDynamic | Out-File C:\PowerShell\Scripts\ConvertFrom-Json.ps1 -Force
+    PS> Copy-Command -Command 'ConvertFrom-Json' -UseForwardHelp -IncludeDynamic | Out-File C:\PowerShell\Scripts\ConvertFrom-Json.ps1
 {% endhighlight %}
+
+The `-UseForwardHelp` switch generates some metadata that points `Get-Help ConvertFrom-Json` to the cmdlet itself, rather than our function. This means we don't need to mess with comment-based help here. (We don't have help for the new parameter, `-As`, but that's what this article is for, right?)
+
+The `-IncludeDynamic` switch causes the `Copy-Command` function to copy any dynamic parameter blocks from the cmdlet to our new wrapper function. As it turns out, this doesn't matter in this case, but it doesn't hurt - and it's helpful if the cmdlet you wrap does include dynamic parameters.
 
 # The Code
 
-Here's the full code for my custom wrapper function around `ConvertTo-Json`:
+Here's the full code for my custom wrapper function around `ConvertFrom-Json`:
 
 {% highlight powershell %}
     function ConvertFrom-Json {
@@ -189,15 +193,8 @@ Notice that the default behavior doesn't change - if we don't specify what we wa
 
 # Conclusion
 
-It be worthwhile to wrap the [JSON.NET library](http://www.newtonsoft.com/json) rather than the .NET class I referenced, since even MSDN has a note that serialization should be done with JSON.NET rather than that class. That said, since that would introduce a dependent library, it would be a candidate for a more full-featured module instead of a quick wrapper function.
-
-In fact, [PowerShell Core seems to be referencing this library already!](https://github.com/PowerShell/PowerShell/blob/7aa7f3858cf41e4474b07fd4ed4b0b2f25fdb831/src/Microsoft.PowerShell.Commands.Utility/commands/utility/WebCmdlet/ConvertFromJsonCommand.cs#L44)
+It might be worthwhile to wrap the [JSON.NET library](http://www.newtonsoft.com/json) rather than the .NET class I referenced, since even MSDN has a note that serialization should be done with JSON.NET rather than that class. Since that would introduce a dependent library, though, it would be a candidate for a more full-featured module instead of a quick wrapper function. In fact, [PowerShell Core seems to be referencing this library already!](https://github.com/PowerShell/PowerShell/blob/7aa7f3858cf41e4474b07fd4ed4b0b2f25fdb831/src/Microsoft.PowerShell.Commands.Utility/commands/utility/WebCmdlet/ConvertFromJsonCommand.cs#L44)
 
 Finally, if you plan to use this wrapper in code that gets pushed anywhere other than your local machine, it would be prudent to include the wrapper function as a private function in your module. That way, you don't have to assume that the other system has this function available in its PowerShell profile.
 
 I hope this is helpful!
-
-# References
-
-* [Everything you wanted to know about hashtables](https://kevinmarquette.github.io/2016-11-06-powershell-hashtable-everything-you-wanted-to-know-about/#converting-json-to-hashtable) (Kevin Marquette)
-* [Making a PowerShell Command Your Own](https://www.petri.com/making-powershell-command) (Jeff Hicks)
